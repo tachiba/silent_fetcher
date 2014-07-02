@@ -31,9 +31,7 @@ module SilentFetcher
 
   class << self
     def parse_html(url, charset: DEFAULT_CHARSET)
-      Nokogiri::HTML(
-        fetch(url)
-      , nil, charset)
+      Nokogiri::HTML(fetch(url), nil, charset)
     end
 
     def parse_feed(url)
