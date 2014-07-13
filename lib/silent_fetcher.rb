@@ -4,10 +4,13 @@ require 'resolv-replace'
 require 'uri'
 require 'httparty'
 
+module SilentFetcher; end
+
+require 'silent_fetcher/configuration'
+
 module SilentFetcher
   class ExpectedError < StandardError; end
 
-  USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.110 Safari/537.36'.freeze
   DEFAULT_CHARSET = 'UTF-8'.freeze
   DEFAULT_RETRY_COUNT = 3
   DEFAULT_TIMEOUT = 60
@@ -30,6 +33,8 @@ module SilentFetcher
   RETRYABLE_ERRORS = [Net::OpenTimeout, Net::ReadTimeout]
 
   class << self
+    attr_accessor :configuration
+    
     def parse_html(url, charset: DEFAULT_CHARSET)
       Nokogiri::HTML(fetch(url), nil, charset)
     end
@@ -66,11 +71,16 @@ module SilentFetcher
       end
     end
 
+    def configure
+      self.configuration ||= Configuration.new
+      yield(configuration)
+    end
+
     protected
     def fetch_options
       {
           headers: {
-            'User-Agent' => USER_AGENT
+            'User-Agent' => configuration.user_agent
           },
           timeout: DEFAULT_TIMEOUT
       }
