@@ -3,6 +3,7 @@ require 'open-uri'
 require 'resolv-replace'
 require 'uri'
 require 'httparty'
+require 'feedjira'
 
 module SilentFetcher; end
 
@@ -34,7 +35,7 @@ module SilentFetcher
 
   class << self
     attr_accessor :configuration
-    
+
     def parse_html(url, charset: DEFAULT_CHARSET)
       Nokogiri::HTML(fetch(url), nil, charset)
     end
