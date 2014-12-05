@@ -21,12 +21,16 @@ module SilentFetcher
       'URI::InvalidURIError'          => [/the scheme http does not accept registry part/, /bad URI/],
       'ArgumentError'                 => [/invalid byte sequence/],
       'SocketError'                   => [/Hostname not known/],
+      'RuntimeError'                  => [/HTTP redirection loop/],
+      'EOFError'                      => [/end of file reached/],
       'Errno::EHOSTUNREACH'           => [/No route to host/],
       'Errno::ECONNRESET'             => [/Connection reset by peer/],
       'Errno::ECONNREFUSED'           => [/Connection refused/],
       'Errno::ENETUNREACH'            => [/Network is unreachable/],
+      'Errno::ETIMEDOUT'              => [],
       'HTTParty::RedirectionTooDeep'  => [],
-      'EOFError'                      => [/end of file reached/]
+      'OpenURI::HTTPError'            => [],
+      'OpenSSL::SSL::SSLError'        => [/SSL_connect returned=1 errno=0 state=SSLv3/]
   }
   RETRYABLE_ERRORS = [Net::OpenTimeout, Net::ReadTimeout]
 
