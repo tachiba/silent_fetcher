@@ -8,6 +8,7 @@ require 'feedjira'
 module SilentFetcher; end
 
 require 'silent_fetcher/configuration'
+require 'silent_fetcher/version'
 
 module SilentFetcher
   class ExpectedError < StandardError; end
@@ -16,20 +17,16 @@ module SilentFetcher
   DEFAULT_RETRY_COUNT = 3
   DEFAULT_TIMEOUT = 60
 
-  EXPECTED_ERRORS = [
-      URI::InvalidURIError, ArgumentError, SocketError,
-      Errno::ECONNRESET, Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::ENETUNREACH,
-      HTTParty::RedirectionTooDeep, EOFError
-  ]
-  EXPECTED_ERROR_MESSAGES = {
-      'URI::InvalidURIError'  => [/the scheme http does not accept registry part/, /bad URI/],
-      'ArgumentError'         => [/invalid byte sequence/],
-      'SocketError'           => [/Hostname not known/],
-      'Errno::EHOSTUNREACH'   => [/No route to host/],
-      'Errno::ECONNRESET'     => [/Connection reset by peer/],
-      'Errno::ECONNREFUSED'   => [/Connection refused/],
-      'Errno::ENETUNREACH'    => [/Network is unreachable/],
-      'EOFError'              => [/end of file reached/]
+  EXPECTED_ERRORS = {
+      'URI::InvalidURIError'          => [/the scheme http does not accept registry part/, /bad URI/],
+      'ArgumentError'                 => [/invalid byte sequence/],
+      'SocketError'                   => [/Hostname not known/],
+      'Errno::EHOSTUNREACH'           => [/No route to host/],
+      'Errno::ECONNRESET'             => [/Connection reset by peer/],
+      'Errno::ECONNREFUSED'           => [/Connection refused/],
+      'Errno::ENETUNREACH'            => [/Network is unreachable/],
+      'HTTParty::RedirectionTooDeep'  => [],
+      'EOFError'                      => [/end of file reached/]
   }
   RETRYABLE_ERRORS = [Net::OpenTimeout, Net::ReadTimeout]
 
@@ -63,18 +60,24 @@ module SilentFetcher
         raise SilentFetcher::ExpectedError, "#{e.message}: #{url}"
       end
 
-    rescue *EXPECTED_ERRORS => e
-      if EXPECTED_ERROR_MESSAGES[e.class.to_s] &&
-          EXPECTED_ERROR_MESSAGES[e.class.to_s].any? {|m| e.message =~ m }
-        raise SilentFetcher::ExpectedError, "#{e.message}: #{url}"
+    rescue => e
+      class_string = e.class.to_s
+
+      if EXPECTED_ERRORS[class_string] &&
+        (EXPECTED_ERRORS[class_string].none? || EXPECTED_ERRORS[class_string].any? {|m| e.message =~ m })
+        raise SilentFetcher::ExpectedError, "#{e.class}: #{e.message} by #{url}"
       else
-        raise e, "#{e.message}: #{url}"
+        raise e
       end
     end
 
     def configure
       self.configuration ||= Configuration.new
       yield(configuration)
+    end
+
+    def expected_error_classes
+      EXPECTED_ERRORS.keys.map(&:constantize)
     end
 
     protected
