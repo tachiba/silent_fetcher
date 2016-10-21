@@ -1,6 +1,8 @@
 # SilentFetcher
 
-TODO: Write a gem description
+SilentFetcher aims to reduce that programmers write common error handling several times.
+
+It ignores errors which are commonly handled (and often be ignored) when fetching URL and has also an ability to parse HTML/RSS, using [nokogiri](https://github.com/sparklemotion/nokogiri) and [feedjira](https://github.com/feedjira/feedjira).
 
 ## Installation
 
