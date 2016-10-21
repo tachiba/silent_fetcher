@@ -20,7 +20,25 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```rb
+# You have to configure before using this.
+SilentFetcher.configure do |config|
+  config.user_agent = "YOUR AGENT NAME"
+end
+
+url = "https://news.ycombinator.com/rss"
+
+response_body = SilentFetcher.fetch(url)
+#=> <rss version=\"2.0\"><channel><title>Hacker News</title><link>https: ...
+
+response = SilentFetcher.parse_feed(url)
+#=> #<Feedjira::Parser::RSS:0x007ffe7c1d7dd8 @version="2.0", @title="Hacker News", @url="https://news.ycombinator.com/", ...
+
+url = "https://www.google.co.jp"
+
+response = SilentFetcher.parse_html(url)
+#=> #<Nokogiri::HTML::Document:0x3ff86d00cbc0 name="document" children=[#<Nokogiri::XML::DTD:0x3ff86d00c0e4 name="html">, ...
+```
 
 ## Contributing
 
