@@ -84,7 +84,7 @@ module SilentFetcher
       EXPECTED_ERRORS.keys.map(&:constantize)
     end
 
-    protected
+    private
     def fetch_options
       {
           headers: {
