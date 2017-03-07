@@ -85,6 +85,7 @@ module SilentFetcher
     end
 
     private
+
     def fetch_options
       {
           headers: {
