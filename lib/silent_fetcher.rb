@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'timeout'
 require 'open-uri'
 require 'resolv-replace'
@@ -5,32 +7,30 @@ require 'uri'
 require 'httparty'
 require 'feedjira'
 
-module SilentFetcher; end
-
 require 'silent_fetcher/configuration'
 require 'silent_fetcher/version'
 
 module SilentFetcher
   class ExpectedError < StandardError; end
 
-  DEFAULT_CHARSET = 'UTF-8'.freeze
+  DEFAULT_CHARSET     = 'UTF-8'
   DEFAULT_RETRY_COUNT = 3
-  DEFAULT_TIMEOUT = 60
+  DEFAULT_TIMEOUT     = 60
 
   EXPECTED_ERRORS = {
-      'URI::InvalidURIError'          => [/the scheme http does not accept registry part/, /bad URI/],
-      'ArgumentError'                 => [/invalid byte sequence/],
-      'SocketError'                   => [/Hostname not known/],
-      'RuntimeError'                  => [/HTTP redirection loop/],
-      'EOFError'                      => [/end of file reached/],
-      'Errno::EHOSTUNREACH'           => [/No route to host/],
-      'Errno::ECONNRESET'             => [/Connection reset by peer/],
-      'Errno::ECONNREFUSED'           => [/Connection refused/],
-      'Errno::ENETUNREACH'            => [/Network is unreachable/],
-      'Errno::ETIMEDOUT'              => [],
-      'HTTParty::RedirectionTooDeep'  => [],
-      'OpenURI::HTTPError'            => [],
-      'OpenSSL::SSL::SSLError'        => [/SSL_connect returned=1 errno=0 state=SSLv3/]
+    'URI::InvalidURIError'         => [/the scheme http does not accept registry part/, /bad URI/],
+    'ArgumentError'                => [/invalid byte sequence/],
+    'SocketError'                  => [/Hostname not known/],
+    'RuntimeError'                 => [/HTTP redirection loop/],
+    'EOFError'                     => [/end of file reached/],
+    'Errno::EHOSTUNREACH'          => [/No route to host/],
+    'Errno::ECONNRESET'            => [/Connection reset by peer/],
+    'Errno::ECONNREFUSED'          => [/Connection refused/],
+    'Errno::ENETUNREACH'           => [/Network is unreachable/],
+    'Errno::ETIMEDOUT'             => [],
+    'HTTParty::RedirectionTooDeep' => [],
+    'OpenURI::HTTPError'           => [],
+    'OpenSSL::SSL::SSLError'       => [/SSL_connect returned=1 errno=0 state=SSLv3/]
   }
   RETRYABLE_ERRORS = [Net::OpenTimeout, Net::ReadTimeout]
 
@@ -50,7 +50,7 @@ module SilentFetcher
     def fetch(url, retry_count: DEFAULT_RETRY_COUNT, allow_no_response: false)
       response = HTTParty.get(url, fetch_options)
 
-      if response.body.size == 0 and not allow_no_response
+      if response.body.size == 0 && !allow_no_response
         raise SilentFetcher::ExpectedError, "response.body.size == 0: #{url}"
       end
 
@@ -84,13 +84,14 @@ module SilentFetcher
       EXPECTED_ERRORS.keys.map(&:constantize)
     end
 
-    protected
+    private
+
     def fetch_options
       {
-          headers: {
-            'User-Agent' => configuration.user_agent
-          },
-          timeout: DEFAULT_TIMEOUT
+        headers: {
+          'User-Agent' => configuration.user_agent
+        },
+        timeout: DEFAULT_TIMEOUT
       }
     end
   end
