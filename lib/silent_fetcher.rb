@@ -7,8 +7,6 @@ require 'uri'
 require 'httparty'
 require 'feedjira'
 
-module SilentFetcher; end
-
 require 'silent_fetcher/configuration'
 require 'silent_fetcher/version'
 

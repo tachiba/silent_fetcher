@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
-class SilentFetcher::Configuration
-  attr_accessor :user_agent
+module SilentFetcher
+  class Configuration
+    attr_accessor :user_agent
+  end
 end
