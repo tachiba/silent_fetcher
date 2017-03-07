@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'timeout'
 require 'open-uri'
 require 'resolv-replace'
@@ -13,7 +15,7 @@ require 'silent_fetcher/version'
 module SilentFetcher
   class ExpectedError < StandardError; end
 
-  DEFAULT_CHARSET     = 'UTF-8'.freeze
+  DEFAULT_CHARSET     = 'UTF-8'
   DEFAULT_RETRY_COUNT = 3
   DEFAULT_TIMEOUT     = 60
 
