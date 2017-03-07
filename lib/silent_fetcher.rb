@@ -50,7 +50,7 @@ module SilentFetcher
     def fetch(url, retry_count: DEFAULT_RETRY_COUNT, allow_no_response: false)
       response = HTTParty.get(url, fetch_options)
 
-      if response.body.size == 0 and not allow_no_response
+      if response.body.size == 0 && !allow_no_response
         raise SilentFetcher::ExpectedError, "response.body.size == 0: #{url}"
       end
 
