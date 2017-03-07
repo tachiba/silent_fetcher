@@ -13,24 +13,24 @@ require 'silent_fetcher/version'
 module SilentFetcher
   class ExpectedError < StandardError; end
 
-  DEFAULT_CHARSET = 'UTF-8'.freeze
+  DEFAULT_CHARSET     = 'UTF-8'.freeze
   DEFAULT_RETRY_COUNT = 3
-  DEFAULT_TIMEOUT = 60
+  DEFAULT_TIMEOUT     = 60
 
   EXPECTED_ERRORS = {
-    'URI::InvalidURIError'          => [/the scheme http does not accept registry part/, /bad URI/],
-    'ArgumentError'                 => [/invalid byte sequence/],
-    'SocketError'                   => [/Hostname not known/],
-    'RuntimeError'                  => [/HTTP redirection loop/],
-    'EOFError'                      => [/end of file reached/],
-    'Errno::EHOSTUNREACH'           => [/No route to host/],
-    'Errno::ECONNRESET'             => [/Connection reset by peer/],
-    'Errno::ECONNREFUSED'           => [/Connection refused/],
-    'Errno::ENETUNREACH'            => [/Network is unreachable/],
-    'Errno::ETIMEDOUT'              => [],
-    'HTTParty::RedirectionTooDeep'  => [],
-    'OpenURI::HTTPError'            => [],
-    'OpenSSL::SSL::SSLError'        => [/SSL_connect returned=1 errno=0 state=SSLv3/]
+    'URI::InvalidURIError'         => [/the scheme http does not accept registry part/, /bad URI/],
+    'ArgumentError'                => [/invalid byte sequence/],
+    'SocketError'                  => [/Hostname not known/],
+    'RuntimeError'                 => [/HTTP redirection loop/],
+    'EOFError'                     => [/end of file reached/],
+    'Errno::EHOSTUNREACH'          => [/No route to host/],
+    'Errno::ECONNRESET'            => [/Connection reset by peer/],
+    'Errno::ECONNREFUSED'          => [/Connection refused/],
+    'Errno::ENETUNREACH'           => [/Network is unreachable/],
+    'Errno::ETIMEDOUT'             => [],
+    'HTTParty::RedirectionTooDeep' => [],
+    'OpenURI::HTTPError'           => [],
+    'OpenSSL::SSL::SSLError'       => [/SSL_connect returned=1 errno=0 state=SSLv3/]
   }
   RETRYABLE_ERRORS = [Net::OpenTimeout, Net::ReadTimeout]
 
